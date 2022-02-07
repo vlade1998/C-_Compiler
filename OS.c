@@ -1,5 +1,5 @@
-/*#include <stdio.h>
-#include <unistd.h>*/
+/*#include <stdio.h>*/
+/*#include <unistd.h>*/
 
 
 /* Constants */
@@ -10,6 +10,8 @@ int BLOCKED;
 
 /* Settings variables */
 
+int osMemorySectionSize;
+int currentProcessInsMemorySectionStart;
 int processMemorySectionSize;
 
 int isProcessActive[8];
@@ -36,9 +38,14 @@ int getNextProcess(int currentProcesss){
 }
 
 void executeProcess(int processId){
+    int currentProcessInstructionsAddress;
+
+    currentProcessInstructionsAddress = osMemorySectionSize + processId*processMemorySectionSize + 32;
+
     output(processId, 0);
-    /*printf("%d\n", processId);
-    sleep(1);*/
+    output(currentProcessInstructionsAddress, 1);
+    /*printf("%d\n", processId);*/
+    /*sleep(1);*/
 }
 
 void main(void){
@@ -55,7 +62,9 @@ void main(void){
 
     /* settings variables definiton */
 
+    osMemorySectionSize = 100;
     processMemorySectionSize = 100;
+    currentProcessInsMemorySectionStart = 100;
 
     /* main loop */
 
@@ -70,7 +79,7 @@ void main(void){
     processState[6] = 0;
     processState[7] = 1;
 
-    while(1){
+    while(1 == 1){
         currentProcess = getNextProcess(currentProcess);
         executeProcess(currentProcess);
     }

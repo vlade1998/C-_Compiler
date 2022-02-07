@@ -10,6 +10,8 @@ int BLOCKED;
 
 /* Settings variables */
 
+int osMemorySectionSize;
+int currentProcessInsMemorySectionStart;
 int processMemorySectionSize;
 
 int isProcessActive[8];
@@ -36,7 +38,12 @@ int getNextProcess(int currentProcesss){
 }
 
 void executeProcess(int processId){
+    int currentProcessInstructionsAddress;
+
+    currentProcessInstructionsAddress = osMemorySectionSize + processId*processMemorySectionSize + 32;
+
     output(processId, 0);
+    output(currentProcessInstructionsAddress, 1);
     /*printf("%d\n", processId);*/
     /*sleep(1);*/
 }
@@ -55,7 +62,9 @@ void main(void){
 
     /* settings variables definiton */
 
+    osMemorySectionSize = 100;
     processMemorySectionSize = 100;
+    currentProcessInsMemorySectionStart = 100;
 
     /* main loop */
 
