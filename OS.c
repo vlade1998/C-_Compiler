@@ -14,6 +14,9 @@ int osMemorySectionSize;
 int currentProcessInsMemorySectionStart;
 int processMemorySectionSize;
 
+
+/* Process variables */
+
 int isProcessActive[8];
 int processState[8];
 int processMemorySection[8];
@@ -41,6 +44,8 @@ void executeProcess(int processId){
     int currentProcessInstructionsAddress;
 
     currentProcessInstructionsAddress = osMemorySectionSize + processId*processMemorySectionSize + 32;
+    loadInstructions(currentProcessInstructionsAddress, 300, 3);
+    jumpAddr(300);
 
     output(processId, 0);
     output(currentProcessInstructionsAddress, 1);
@@ -64,7 +69,7 @@ void main(void){
 
     osMemorySectionSize = 100;
     processMemorySectionSize = 100;
-    currentProcessInsMemorySectionStart = 100;
+    currentProcessInsMemorySectionStart = 300;
 
     /* main loop */
 
@@ -78,6 +83,8 @@ void main(void){
     processState[5] = 1;
     processState[6] = 0;
     processState[7] = 1;
+
+    processNumberOfInstructions[0] = 2;
 
     while(1 == 1){
         currentProcess = getNextProcess(currentProcess);
