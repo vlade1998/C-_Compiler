@@ -496,6 +496,7 @@ void generateAssembly(){
             lineCounter++;
         }else if(it->op == "writei"){
             insertInstructionB(Writei,stringToRegister(it->arg1),stringToRegister(it->arg3),0,lineCounter);
+            lineCounter++;
         }
     }
     insertSpInstruction(memPosGlobal);
