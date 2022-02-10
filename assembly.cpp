@@ -503,6 +503,15 @@ void generateAssembly(){
                 insertInstructionB(Store, static_cast<Register>(i), $aux, i, lineCounter);
                 lineCounter++;
             }
+        }else if(it->op == "loadReg"){
+            insertInstructionB(Mv, stringToRegister(it->arg1), $aux, 0, lineCounter);
+            lineCounter++;
+            for(int i = 0; i < 32; i++){
+                if(i != 26){
+                    insertInstructionB(Load, static_cast<Register>(i), $aux, i, lineCounter);
+                    lineCounter++;
+                }
+            }
         }
     }
     insertSpInstruction(memPosGlobal);

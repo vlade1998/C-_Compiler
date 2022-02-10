@@ -119,7 +119,7 @@ string tabGenerator(string first_word, bool is_label){
     return ret+first_word;
 }
 
-string specialFunctions[3] = {"loadInstructions","jumpAddr","storeRegisters"};
+string specialFunctions[4] = {"loadInstructions","jumpAddr","storeRegisters","loadRegisters"};
 
 int isSpecialFunction(string fun){
     for(int i = 0; i < sizeof(specialFunctions)/sizeof(*specialFunctions); i++){
@@ -182,6 +182,15 @@ void generateSpecialFunction(treeNode* tree){
 
 		insertQuad("storeReg", regDataAddress, " ", " ");
 
+	}else if(tree->name == "loadRegisters"){ // loadRegisters(dataAddress)
+		if(countParams(tree->child[0]) != 1){
+			cout << "Erro no uso da funcao storeRegisters";
+			exit(-1);
+		}
+		codeGeneratorQuad(tree->child[0],1);
+		string regDataAddress = "_t" + to_string((tempIndex-1)%16);
+
+		insertQuad("loadReg", regDataAddress, " ", " ");
 	}
 }
 
