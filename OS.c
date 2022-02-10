@@ -44,8 +44,8 @@ void executeProcess(int processId){
     int currentProcessInstructionsAddress;
 
     currentProcessInstructionsAddress = osMemorySectionSize + processId*processMemorySectionSize + 32;
-    loadInstructions(currentProcessInstructionsAddress, 300, processNumberOfInstructions[processId]);
-    jumpAddr(300);
+    loadInstructions(currentProcessInstructionsAddress, currentProcessInsMemorySectionStart, processNumberOfInstructions[processId]);
+    jumpAddr(currentProcessInsMemorySectionStart);
 
     output(processId, 0);
     output(currentProcessInstructionsAddress, 1);
