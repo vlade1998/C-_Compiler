@@ -44,7 +44,7 @@ void executeProcess(int processId){
     int currentProcessInstructionsAddress;
 
     currentProcessInstructionsAddress = osMemorySectionSize + processId*processMemorySectionSize + 32;
-    loadInstructions(currentProcessInstructionsAddress, 300, 3);
+    loadInstructions(currentProcessInstructionsAddress, 300, processNumberOfInstructions[processId]);
     jumpAddr(300);
 
     output(processId, 0);
@@ -84,7 +84,7 @@ void main(void){
     processState[6] = 0;
     processState[7] = 1;
 
-    processNumberOfInstructions[0] = 2;
+    processNumberOfInstructions[0] = 3;
 
     while(1 == 1){
         currentProcess = getNextProcess(currentProcess);
