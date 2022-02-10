@@ -119,10 +119,10 @@ string tabGenerator(string first_word, bool is_label){
     return ret+first_word;
 }
 
-string specialFunctions[2] = {"loadInstructions","jumpAddr"};
+string specialFunctions[3] = {"loadInstructions","jumpAddr","storeRegisters"};
 
 int isSpecialFunction(string fun){
-    for(int i = 0; i < 2; i++){
+    for(int i = 0; i < sizeof(specialFunctions)/sizeof(*specialFunctions); i++){
         if(specialFunctions[i] == fun) return 1;
     }
     return 0;
@@ -164,7 +164,7 @@ void generateSpecialFunction(treeNode* tree){
 		insertQuad("+",regCounter,regOne,regCounter);
 		insertQuad("goto","_L" + to_string(label1)," "," ");
 		insertQuad("label","_L" + to_string(label2)," "," ");
-	}else if(tree->name == "jumpAddr"){
+	}else if(tree->name == "jumpAddr"){ // jumpAddr(instructionAddress)
 		if(countParams(tree->child[0]) != 1){
 			cout << "Erro no uso da funcao loadInstructions";
 			exit(-1);
@@ -172,6 +172,16 @@ void generateSpecialFunction(treeNode* tree){
 		codeGeneratorQuad(tree->child[0],1);
 		string regAddress = "_t" + to_string((tempIndex-1)%16);
 		insertQuad("jumpAddr",regAddress," "," ");
+	}else if(tree->name == "storeRegisters"){ // storeRegisters(dataAddress)
+		if(countParams(tree->child[0]) != 1){
+			cout << "Erro no uso da funcao storeRegisters";
+			exit(-1);
+		}
+		codeGeneratorQuad(tree->child[0],1);
+		string regDataAddress = "_t" + to_string((tempIndex-1)%16);
+
+		insertQuad("storeReg", regDataAddress, " ", " ");
+
 	}
 }
 

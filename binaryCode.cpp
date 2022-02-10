@@ -78,7 +78,7 @@ int registerToInt(Register reg){
         case $a6: return 23;
         case $a7: return 24;
         case $a8: return 25;
-        case $a9: return 26;
+        case $aux: return 26;
         case $pc: return 27;
         case $v0: return 28;
         case $sp: return 29;

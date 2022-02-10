@@ -9,7 +9,7 @@
 using namespace std;
 
 enum InstrKind{Add,Sub,Addim,Mult,Div,Mv,Loadi,Load,Store,Beq,Bne,Slt,Slti,And,Or,Not,Xor,Jump,Jumpr,Jal,Sr,Sl,mLO,mHI,Nop,Halt,In,Out,Writei};
-enum Register{$zero,$t0,$t1,$t2,$t3,$t4,$t5,$t6,$t7,$t8,$t9,$t10,$t11,$t12,$t13,$t14,$t15,$a0,$a1,$a2,$a3,$a4,$a5,$a6,$a7,$a8,$a9,$pc,$v0,$sp,$gp,$ra};
+enum Register{$zero,$t0,$t1,$t2,$t3,$t4,$t5,$t6,$t7,$t8,$t9,$t10,$t11,$t12,$t13,$t14,$t15,$a0,$a1,$a2,$a3,$a4,$a5,$a6,$a7,$a8,$aux,$pc,$v0,$sp,$gp,$ra};
 enum Format{A,B,C,D};
 enum LineKind{Label,Inst};
 
@@ -149,7 +149,6 @@ Register getParamRegister(int n){
         case 6: return $a6;
         case 7: return $a7;
         case 8: return $a8;
-        case 9: return $a9;
     }
 }
 
@@ -181,7 +180,7 @@ string registerToString(Register reg){
         case $a6: return "$a6";
         case $a7: return "$a7";
         case $a8: return "$a8";
-        case $a9: return "$a9";
+        case $aux: return "$aux";
         case $pc: return "$pc";
         case $v0: return "$v0";
         case $sp: return "$sp";
@@ -497,6 +496,13 @@ void generateAssembly(){
         }else if(it->op == "writei"){
             insertInstructionB(Writei,stringToRegister(it->arg1),stringToRegister(it->arg3),0,lineCounter);
             lineCounter++;
+        }else if(it->op == "storeReg"){
+            insertInstructionB(Mv, stringToRegister(it->arg1), $aux, 0, lineCounter);
+            lineCounter++;
+            for(int i = 0; i < 32; i++){
+                insertInstructionB(Store, static_cast<Register>(i), $aux, i, lineCounter);
+                lineCounter++;
+            }
         }
     }
     insertSpInstruction(memPosGlobal);
