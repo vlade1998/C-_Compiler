@@ -512,6 +512,8 @@ void generateAssembly(){
                     lineCounter++;
                 }
             }
+            insertInstructionC(Jumpr, $pc, 0, lineCounter);
+            lineCounter++;
         }
     }
     insertSpInstruction(memPosGlobal);
