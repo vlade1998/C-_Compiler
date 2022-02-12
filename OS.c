@@ -40,12 +40,18 @@ int getNextProcess(int currentProcesss){
     return nextProcessCandidate;
 }
 
+void initializeProcess(int processId){
+    isProcessActive[processId] = 1;
+    processState[processId] = READY;
+
+}
+
 void executeProcess(int processId){
     int currentProcessInstructionsAddress;
 
     currentProcessInstructionsAddress = osMemorySectionSize + processId*processMemorySectionSize + 32;
     loadInstructions(currentProcessInstructionsAddress, currentProcessInsMemorySectionStart, processNumberOfInstructions[processId]);
-    jumpAddr(currentProcessInsMemorySectionStart);
+    loadRegisters(osMemorySectionSize + processId*processMemorySectionSize);
 
     output(processId, 0);
     output(currentProcessInstructionsAddress, 1);
@@ -69,20 +75,13 @@ void main(void){
 
     osMemorySectionSize = 100;
     processMemorySectionSize = 100;
-    currentProcessInsMemorySectionStart = 300;
+    currentProcessInsMemorySectionStart = 400;
 
     /* main loop */
 
     currentProcess = 7;
 
-    processState[0] = 1;
-    processState[1] = 1;
-    processState[2] = 1;
-    processState[3] = 1;
-    processState[4] = 1;
-    processState[5] = 1;
-    processState[6] = 0;
-    processState[7] = 1;
+    initializeProcess(0);
 
     processNumberOfInstructions[0] = 3;
 
