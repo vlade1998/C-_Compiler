@@ -504,7 +504,7 @@ void generateAssembly(){
                 lineCounter++;
             }
         }else if(it->op == "loadReg"){
-            insertInstructionB(Mv, stringToRegister(it->arg1), $aux, 0, lineCounter);
+            insertInstructionB(Mv, $aux, stringToRegister(it->arg1), 0, lineCounter);
             lineCounter++;
             for(int i = 0; i < 32; i++){
                 if(i != 26){
@@ -513,6 +513,11 @@ void generateAssembly(){
                 }
             }
             insertInstructionC(Jumpr, $pc, 0, lineCounter);
+            lineCounter++;
+        }else if(it->op == "initReg"){
+            insertInstructionB(Store, stringToRegister(it->arg2), stringToRegister(it->arg1), 27, lineCounter);
+            lineCounter++;
+            insertInstructionB(Store, stringToRegister(it->arg2), stringToRegister(it->arg1), 30, lineCounter);
             lineCounter++;
         }
     }

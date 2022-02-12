@@ -119,7 +119,13 @@ string tabGenerator(string first_word, bool is_label){
     return ret+first_word;
 }
 
-string specialFunctions[4] = {"loadInstructions","jumpAddr","storeRegisters","loadRegisters"};
+string specialFunctions[5] = {
+	"loadInstructions",
+	"jumpAddr",
+	"storeRegisters",
+	"loadRegisters",
+	"initializeRegisters"
+};
 
 int isSpecialFunction(string fun){
     for(int i = 0; i < sizeof(specialFunctions)/sizeof(*specialFunctions); i++){
@@ -184,13 +190,28 @@ void generateSpecialFunction(treeNode* tree){
 
 	}else if(tree->name == "loadRegisters"){ // loadRegisters(dataAddress)
 		if(countParams(tree->child[0]) != 1){
-			cout << "Erro no uso da funcao storeRegisters";
+			cout << "Erro no uso da funcao loadRegisters";
 			exit(-1);
 		}
 		codeGeneratorQuad(tree->child[0],1);
 		string regDataAddress = "_t" + to_string((tempIndex-1)%16);
 
 		insertQuad("loadReg", regDataAddress, " ", " ");
+	}else if(tree->name == "initializeRegisters"){ // initializeRegisters(processMemorySectionStart, instructionMemomrySectionStart)
+		if(countParams(tree->child[0]) != 2){
+			cout << "Erro no uso da funcao loadRegisters";
+			exit(-1);
+		}
+		codeGeneratorQuad(tree->child[0],1);
+		string regDataAddress = "_t" + to_string((tempIndex-1)%16);
+
+		codeGeneratorQuad(tree->child[0]->sibling,1);
+		string regInstMemSectionStart = "_t" + to_string((tempIndex-1)%16);
+
+		codeGeneratorQuad(tree->child[0]->sibling->sibling,1);
+		string regInitialPcValue = "_t" + to_string((tempIndex-1)%16);
+
+		insertQuad("initReg", regDataAddress, regInstMemSectionStart, " ");
 	}
 }
 
