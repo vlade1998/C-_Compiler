@@ -497,7 +497,7 @@ void generateAssembly(){
             insertInstructionB(Writei,stringToRegister(it->arg1),stringToRegister(it->arg3),0,lineCounter);
             lineCounter++;
         }else if(it->op == "storeReg"){
-            insertInstructionB(Mv, stringToRegister(it->arg1), $aux, 0, lineCounter);
+            insertInstructionB(Mv, $aux, stringToRegister(it->arg1), 0, lineCounter);
             lineCounter++;
             for(int i = 0; i < 32; i++){
                 insertInstructionB(Store, static_cast<Register>(i), $aux, i, lineCounter);
