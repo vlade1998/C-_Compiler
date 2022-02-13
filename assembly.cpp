@@ -8,7 +8,7 @@
 
 using namespace std;
 
-enum InstrKind{Add,Sub,Addim,Mult,Div,Mv,Loadi,Load,Store,Beq,Bne,Slt,Slti,And,Or,Not,Xor,Jump,Jumpr,Jal,Sr,Sl,mLO,mHI,Nop,Halt,In,Out,Writei};
+enum InstrKind{Add,Sub,Addim,Mult,Div,Mv,Loadi,Load,Store,Beq,Bne,Slt,Slti,And,Or,Not,Xor,Jump,Jumpr,Jal,Sr,Sl,mLO,mHI,Nop,Halt,In,Out,Writei,rstQnt,stpQnt};
 enum Register{$zero,$t0,$t1,$t2,$t3,$t4,$t5,$t6,$t7,$t8,$t9,$t10,$t11,$t12,$t13,$t14,$t15,$a0,$a1,$a2,$a3,$a4,$a5,$a6,$a7,$a8,$aux,$pc,$v0,$sp,$gp,$ra};
 enum Format{A,B,C,D};
 enum LineKind{Label,Inst};
@@ -497,6 +497,8 @@ void generateAssembly(){
             insertInstructionB(Writei,stringToRegister(it->arg1),stringToRegister(it->arg3),0,lineCounter);
             lineCounter++;
         }else if(it->op == "storeReg"){
+            insertInstructionD(stpQnt, 0, lineCounter);
+            lineCounter++;
             insertInstructionB(Mv, $aux, stringToRegister(it->arg1), 0, lineCounter);
             lineCounter++;
             for(int i = 0; i < 32; i++){
@@ -512,6 +514,8 @@ void generateAssembly(){
                     lineCounter++;
                 }
             }
+            insertInstructionD(rstQnt, 0, lineCounter);
+            lineCounter++;
             insertInstructionC(Jumpr, $pc, 0, lineCounter);
             lineCounter++;
         }else if(it->op == "initReg"){
@@ -596,6 +600,12 @@ void printAssembly(){
                     break;
                 case Writei:
                     assemblyCode += "   Writei " + registerToString(it->ra) + "," + registerToString(it->rb) + "," + to_string(it->immediate) + "\n";
+                    break;
+                case rstQnt:
+                    assemblyCode += "   rstQnt\n";
+                    break;
+                case stpQnt:
+                    assemblyCode += "   stpQnt\n";
                     break;
             }
         }

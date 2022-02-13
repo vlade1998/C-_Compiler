@@ -180,6 +180,12 @@ void generateBinaryCode(){
                 case Writei:
                     insertInstructionB(28,registerToInt(it->ra),registerToInt(it->rb),it->immediate);
                     break;
+                case rstQnt:
+                    insertInstructionD(30,0);
+                    break;
+                case stpQnt:
+                    insertInstructionD(31,0);
+                    break;
                 default:
                     break;
             }
