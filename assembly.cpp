@@ -110,12 +110,13 @@ void insertBeq_Bne(InstrKind instrKind, Register ra, Register rb, string label, 
 
 void insertSpInstruction(int mem){
     Instruction newInstruction;
-    newInstruction.format = C;
-    newInstruction.instrKind = Loadi;
+    newInstruction.format = B;
+    newInstruction.instrKind = Addim;
     newInstruction.ra = $sp;
+    newInstruction.rb = $gp;
     newInstruction.immediate = mem;
     newInstruction.lineKind = Inst;
-    newInstruction.lineNumber = 1;
+    newInstruction.lineNumber = 2;
     instructionList.push_front(newInstruction);
 }
 
@@ -216,7 +217,7 @@ void generateAssembly(){
     memPosGlobal = 0;
     memPosLocal;
     argCounter = 0;
-    lineCounter = 2;
+    lineCounter = 3;
     for(it = quadList.begin(); it != quadList.end(); it ++){
         if(it->op == "goto"){
             insertJump(Jump,it->arg1,lineCounter);

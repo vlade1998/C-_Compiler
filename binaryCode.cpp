@@ -196,7 +196,7 @@ void generateBinaryCode(){
 void printBinaryCode(){
     list<BinaryInst>::iterator it;
     string binaryCodeString;
-    int line = 1;
+    int line = 2;
     for(it = binaryCode.begin(); it!= binaryCode.end(); it++){
         switch(it->format){
             case A:
