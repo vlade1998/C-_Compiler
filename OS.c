@@ -44,6 +44,7 @@ void initializeProcess(int processId){
     isProcessActive[processId] = 1;
     processState[processId] = READY;
 
+    initializeRegisters(osMemorySectionSize + processId*processMemorySectionSize, currentProcessInsMemorySectionStart);
 }
 
 void executeProcess(int processId){
@@ -53,8 +54,6 @@ void executeProcess(int processId){
     loadInstructions(currentProcessInstructionsAddress, currentProcessInsMemorySectionStart, processNumberOfInstructions[processId]);
     loadRegisters(osMemorySectionSize + processId*processMemorySectionSize);
 
-    output(processId, 0);
-    output(currentProcessInstructionsAddress, 1);
     /*printf("%d\n", processId);*/
     /*sleep(1);*/
 }
