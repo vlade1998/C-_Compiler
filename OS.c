@@ -51,12 +51,14 @@ void executeProcess(int processId){
     int currentProcessInstructionsAddress;
 
     currentProcessInstructionsAddress = osMemorySectionSize + processId*processMemorySectionSize + 32;
+    storeRegisters(0);
     loadInstructions(currentProcessInstructionsAddress, currentProcessInsMemorySectionStart, processNumberOfInstructions[processId]);
     loadRegisters(osMemorySectionSize + processId*processMemorySectionSize);
 
     /*printf("%d\n", processId);*/
     /*sleep(1);*/
 }
+
 
 void main(void){
 

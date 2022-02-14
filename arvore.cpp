@@ -119,12 +119,13 @@ string tabGenerator(string first_word, bool is_label){
     return ret+first_word;
 }
 
-string specialFunctions[5] = {
+string specialFunctions[6] = {
 	"loadInstructions",
 	"jumpAddr",
 	"storeRegisters",
 	"loadRegisters",
-	"initializeRegisters"
+	"initializeRegisters",
+	"storeCurrentProcessRegisters"
 };
 
 int isSpecialFunction(string fun){
@@ -212,6 +213,12 @@ void generateSpecialFunction(treeNode* tree){
 		string regInitialPcValue = "_t" + to_string((tempIndex-1)%16);
 
 		insertQuad("initReg", regDataAddress, regInstMemSectionStart, " ");
+	}else if(tree->name == "storeCurrentProcessRegisters"){
+		if(countParams(tree->child[0]) != 0){
+			cout << "Erro no uso da funcao storeCurrentProcessRegisters";
+			exit(-1);
+		}
+		insertQuad("storeCurReg", " ", " ", " ");
 	}
 }
 

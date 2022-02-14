@@ -500,10 +500,10 @@ void generateAssembly(){
         }else if(it->op == "storeReg"){
             insertInstructionD(stpQnt, 0, lineCounter);
             lineCounter++;
-            insertInstructionB(Mv, $aux, stringToRegister(it->arg1), 0, lineCounter);
-            lineCounter++;
+            // insertInstructionB(Mv, $aux, stringToRegister(it->arg1), 0, lineCounter);
+            // lineCounter++;
             for(int i = 0; i < 32; i++){
-                insertInstructionB(Store, static_cast<Register>(i), $aux, i, lineCounter);
+                insertInstructionB(Store, static_cast<Register>(i), stringToRegister(it->arg1), i, lineCounter);
                 lineCounter++;
             }
         }else if(it->op == "loadReg"){
@@ -524,6 +524,11 @@ void generateAssembly(){
             lineCounter++;
             insertInstructionB(Store, stringToRegister(it->arg2), stringToRegister(it->arg1), 30, lineCounter);
             lineCounter++;
+        }else if(it->op == "storeCurReg"){
+            for(int i = 0; i < 32; i++){
+                insertInstructionB(Store, static_cast<Register>(i), $aux, i, lineCounter);
+                lineCounter++;
+            }
         }
     }
     insertSpInstruction(memPosGlobal);
