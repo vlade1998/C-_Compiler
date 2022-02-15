@@ -55,10 +55,14 @@ void executeProcess(int processId){
     loadInstructions(currentProcessInstructionsAddress, currentProcessInsMemorySectionStart, processNumberOfInstructions[processId]);
     loadRegisters(osMemorySectionSize + processId*processMemorySectionSize);
 
+    if(1 == 0){
+        storeCurrentProcessRegisters();
+        kernelMode();
+    }
+
     /*printf("%d\n", processId);*/
     /*sleep(1);*/
 }
-
 
 void main(void){
 
@@ -83,8 +87,10 @@ void main(void){
     currentProcess = 7;
 
     initializeProcess(0);
+    initializeProcess(1);
 
-    processNumberOfInstructions[0] = 3;
+    processNumberOfInstructions[0] = 4;
+    processNumberOfInstructions[1] = 4;
 
     while(1 == 1){
         currentProcess = getNextProcess(currentProcess);
