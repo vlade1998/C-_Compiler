@@ -14,6 +14,9 @@ int osMemorySectionSize;
 int currentProcessInsMemorySectionStart;
 int processMemorySectionSize;
 
+
+/* Process variables */
+
 int isProcessActive[8];
 int processState[8];
 int processMemorySection[8];
@@ -25,7 +28,7 @@ int remainder(int num, int divisor){
 }
 
 int roundRobin(int processId){
-    return remainder((processId+1),8);
+    return remainder((processId+1),2);
 }
 
 int getNextProcess(int currentProcesss){
@@ -37,13 +40,34 @@ int getNextProcess(int currentProcesss){
     return nextProcessCandidate;
 }
 
+void initializeProcess(int processId){
+    isProcessActive[processId] = 1;
+    processState[processId] = READY;
+
+    initializeRegisters(osMemorySectionSize + processId*processMemorySectionSize, currentProcessInsMemorySectionStart);
+}
+
 void executeProcess(int processId){
     int currentProcessInstructionsAddress;
 
+    processState[processId] = EXECUTING;
     currentProcessInstructionsAddress = osMemorySectionSize + processId*processMemorySectionSize + 32;
+    storeRegisters(0);
+    loadInstructions(currentProcessInstructionsAddress, currentProcessInsMemorySectionStart, processNumberOfInstructions[processId]);
+    loadRegisters(osMemorySectionSize + processId*processMemorySectionSize);
 
-    output(processId, 0);
-    output(currentProcessInstructionsAddress, 1);
+    if(1 == 0){
+        storeCurrentProcessRegisters();
+        kernelMode();
+        processState[processId] = READY;
+    }
+
+    if(1 == 0){
+        storeCurrentProcessRegisters();
+        kernelMode();
+        processState[processId] = 0;
+        isProcessActive[processId] = 0;
+    }
     /*printf("%d\n", processId);*/
     /*sleep(1);*/
 }
@@ -64,20 +88,17 @@ void main(void){
 
     osMemorySectionSize = 100;
     processMemorySectionSize = 100;
-    currentProcessInsMemorySectionStart = 100;
+    currentProcessInsMemorySectionStart = 500;
 
     /* main loop */
 
     currentProcess = 7;
 
-    processState[0] = 1;
-    processState[1] = 1;
-    processState[2] = 1;
-    processState[3] = 1;
-    processState[4] = 1;
-    processState[5] = 1;
-    processState[6] = 0;
-    processState[7] = 1;
+    initializeProcess(0);
+    initializeProcess(1);
+
+    processNumberOfInstructions[0] = 4;
+    processNumberOfInstructions[1] = 4;
 
     while(1 == 1){
         currentProcess = getNextProcess(currentProcess);

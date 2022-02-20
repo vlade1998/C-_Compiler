@@ -28,7 +28,7 @@ int remainder(int num, int divisor){
 }
 
 int roundRobin(int processId){
-    return remainder((processId+1),8);
+    return remainder((processId+1),2);
 }
 
 int getNextProcess(int currentProcesss){
@@ -50,6 +50,7 @@ void initializeProcess(int processId){
 void executeProcess(int processId){
     int currentProcessInstructionsAddress;
 
+    processState[processId] = EXECUTING;
     currentProcessInstructionsAddress = osMemorySectionSize + processId*processMemorySectionSize + 32;
     storeRegisters(0);
     loadInstructions(currentProcessInstructionsAddress, currentProcessInsMemorySectionStart, processNumberOfInstructions[processId]);
@@ -58,8 +59,15 @@ void executeProcess(int processId){
     if(1 == 0){
         storeCurrentProcessRegisters();
         kernelMode();
+        processState[processId] = READY;
     }
 
+    if(1 == 0){
+        storeCurrentProcessRegisters();
+        kernelMode();
+        processState[processId] = 0;
+        isProcessActive[processId] = 0;
+    }
     /*printf("%d\n", processId);*/
     /*sleep(1);*/
 }
@@ -80,7 +88,7 @@ void main(void){
 
     osMemorySectionSize = 100;
     processMemorySectionSize = 100;
-    currentProcessInsMemorySectionStart = 400;
+    currentProcessInsMemorySectionStart = 500;
 
     /* main loop */
 
